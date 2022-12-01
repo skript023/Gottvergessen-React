@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/Gottvergessen-React/static/css/main.1d9306bc.css",
-    "main.js": "/Gottvergessen-React/static/js/main.992cea56.js",
+    "main.css": "/Gottvergessen-React/static/css/main.aac8906f.css",
+    "main.js": "/Gottvergessen-React/static/js/main.828697c9.js",
     "static/js/787.c4e7f8f9.chunk.js": "/Gottvergessen-React/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/foto.jpg": "/Gottvergessen-React/static/media/foto.ad580323251a27ed9753.jpg",
     "static/media/logo.svg": "/Gottvergessen-React/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Gottvergessen-React/index.html",
-    "main.1d9306bc.css.map": "/Gottvergessen-React/static/css/main.1d9306bc.css.map",
-    "main.992cea56.js.map": "/Gottvergessen-React/static/js/main.992cea56.js.map",
+    "main.aac8906f.css.map": "/Gottvergessen-React/static/css/main.aac8906f.css.map",
+    "main.828697c9.js.map": "/Gottvergessen-React/static/js/main.828697c9.js.map",
     "787.c4e7f8f9.chunk.js.map": "/Gottvergessen-React/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1d9306bc.css",
-    "static/js/main.992cea56.js"
+    "static/css/main.aac8906f.css",
+    "static/js/main.828697c9.js"
   ]
 }
