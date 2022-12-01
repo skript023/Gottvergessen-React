@@ -50,12 +50,12 @@ const Home = () => {
                     })}
 
                     {/* <nav aria-label="Page navigation example">
-                        <ul class="pagination">
+                        <ul className="pagination">
                             {backend_data.map((post, i) => {
                                 post = i
                                 return ( 
                                 
-                                    <li class='page-item active'><a class='page-link' href={`index.php?page=${i+1}`}>{i+1}</a></li>
+                                    <li className='page-item active'><a className='page-link' href={`index.php?page=${i+1}`}>{i+1}</a></li>
                                 
                                 )
                             })}
