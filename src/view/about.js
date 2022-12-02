@@ -1,8 +1,13 @@
 import './core/card_style.css'
 import foto from './image/foto.jpg'
+import {useEffect} from 'react'
 
-const About = () =>
+const About = (props) =>
 {
+    useEffect(() => {
+        document.title = props.title || "React App";
+    }, [props.title]);
+
     return (
         <div>
             <section className="jumbotron text-center mt-5 my-5">
@@ -23,7 +28,7 @@ const About = () =>
                             <p>
                             Chime is a financial technology company founded on the premise that basic banking services should be helpful, easy and free. 
                             We want to profit with our members, not from them. 
-                            That’s why our model doesn’t rely on overdraft fees, monthly service fees, service fees, minimum balance requirements, and more.
+                            Thats why our model doesnt rely on overdraft fees, monthly service fees, service fees, minimum balance requirements, and more.
                             We partner with regional banks to design member first financial products. 
                             This creates a more competitive market with better, lower-cost options for
                             </p>

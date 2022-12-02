@@ -1,6 +1,11 @@
+import {useEffect} from 'react'
 
-const Contact = () => 
+const Contact = (props) => 
 {
+    useEffect(() => {
+        document.title = props.title || "React App";
+    }, [props.title]);
+
     return (
         <div className="container">
             <div className="row">

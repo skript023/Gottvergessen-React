@@ -2,9 +2,9 @@ import './core/card_style.css'
 import logo from '../logo.svg'
 import {useEffect, useState} from 'react'
 
-const Home = () => {
+const Home = (props) => {
     const [backend_data, set_backend_data] = useState([])
-
+    
     useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/posts?_limit=12")
         .then(res => res.json())
@@ -15,6 +15,10 @@ const Home = () => {
             console.log(err.message);
         });
     }, [])
+
+    useEffect(() => {
+        document.title = props.title || "React App";
+    }, [props.title]);
 
     return (
         <div className="container">
