@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { ColorModeContext, useMode } from '../theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-
+import './dashboard.css'
 import Sidebar from './sidebar'
 import TopbarHeader from './topbar_header'
 
@@ -13,7 +13,7 @@ const DashboardLayout = () =>
         <ColorModeContext.Provider value={color_mode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
-                <div className="App">
+                <div className="app">
                 <Sidebar/>
                     <main className="content">
                     <TopbarHeader/>
