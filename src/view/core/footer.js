@@ -6,6 +6,7 @@ const Copyright = (props) => {
             {'Copyright © '}
             <Link color="inherit" href="https://gottvergessen.000webhostapp.com/">
                 Fatur Muhammad
+                <p hidden>learn react</p>
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
