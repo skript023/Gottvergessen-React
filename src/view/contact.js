@@ -7,9 +7,9 @@ const Contact = (props) =>
         document.title = props.title || "React App";
     }, [props.title]);
 
-    const handleFormSubmit = (values) => {
-        console.log(values);
-    };
+    // const handleFormSubmit = (values) => {
+    //     console.log(values);
+    // };
 
     return (
         <Container fixed>
