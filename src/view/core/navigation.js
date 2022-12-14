@@ -1,60 +1,233 @@
-import {NavLink} from 'react-router-dom'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
+import { 
+	AppBar, 
+	Box, 
+	Button, 
+	IconButton, 
+	Typography, 
+	useTheme,
+	Toolbar,
+	Menu,
+	Container,
+	Avatar,
+	Tooltip,
+	MenuItem,
+	Grid
+} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
+import { tokens } from "../dashboard/theme";
+
+const pages = [
+	{
+		name: 'Home',
+		url: '/'
+	},
+	{
+		name: 'About', 
+		url: '/about'
+	},
+	{
+		name: 'Contact', 
+		url: '/contact'
+	},
+	{
+		name: 'Categories',
+		url: '/category'
+	}
+];
+const settings = [
+	{
+		name: 'Profile', 
+		url: '/dashboard/profile'
+	},
+	{
+		name: 'Account', 
+		url: '/dashboard/account'
+	},
+	{
+		name: 'Dashboard', 
+		url: '/dashboard'
+	},
+	{
+		name: 'Logout',
+		url: '/logout'
+	}
+];
 
 const Navigation = () =>
 {
-	const [backend_data, set_backend_data] = useState([])
+	const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
-    useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/posts?_limit=12")
-        .then(res => res.json())
-        .then(data => {
-            set_backend_data(data)
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-    }, [])
+	const [anchorElNav, setAnchorElNav] = useState(null);
+	const [anchorElUser, setAnchorElUser] = useState(null);
+
+	const handleOpenNavMenu = (event) => {
+		setAnchorElNav(event.currentTarget);
+	};
+	const handleOpenUserMenu = (event) => {
+		setAnchorElUser(event.currentTarget);
+	};	
+
+	const handleCloseNavMenu = () => {
+		setAnchorElNav(null);
+	};
+
+	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
+
+	// const [backend_data, set_backend_data] = useState([])
+
+    // useEffect(() => {
+    //     fetch("https://jsonplaceholder.typicode.com/posts?_limit=12")
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         set_backend_data(data)
+    //     })
+    //     .catch((err) => {
+    //         console.log(err.message);
+    //     });
+    // }, [])
 
     return (
-        <nav className="navbar navbar-expand-lg bg-light">
-			<div className="container-fluid">
-				<a className="navbar-brand" href="/">Movies</a>
-				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-					<li className="nav-item">
-					<NavLink className="nav-link active" aria-current="page" to="/">Home</NavLink>
-					</li>
-					<li className="nav-item">
-					<NavLink className="nav-link" to="/about">About</NavLink>
-					</li>
-					<li className="nav-item">
-					<NavLink className="nav-link" to="/contact">Contact</NavLink>
-					</li>
-					<li className="nav-item dropdown">
-					<a className="nav-link dropdown-toggle" href="/#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Categories
-					</a>
-					<ul className="dropdown-menu">
-						{backend_data.map((category, i) => {
-							return <li><NavLink className="dropdown-item" to="/about">{category.title}</NavLink></li>
-						})}
-					</ul>
-					</li>
-					{/* <li className="nav-item">
-					<a href="/#" className="nav-link disabled">Disabled</a>
-					</li> */}
-				</ul>
-				<form className="d-flex" role="search">
-					<input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-					<button className="btn btn-outline-success" type="submit">Search</button>
-				</form>
-				</div>
-			</div>
-        </nav>
+        <AppBar position="static">
+			<Container maxWidth="xl">
+				<Toolbar disableGutters>
+				<RestaurantOutlinedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+				<Typography
+					variant="h6"
+					noWrap
+					component="a"
+					href="/"
+					sx={{
+					mr: 2,
+					display: { xs: 'none', md: 'flex' },
+					fontFamily: 'monospace',
+					fontWeight: 700,
+					letterSpacing: '.3rem',
+					color: 'inherit',
+					textDecoration: 'none',
+					}}
+				>
+					Food
+				</Typography>
+
+				<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+					<IconButton
+					size="large"
+					aria-label="account of current user"
+					aria-controls="menu-appbar"
+					aria-haspopup="true"
+					onClick={handleOpenNavMenu}
+					color="inherit"
+					>
+					<MenuIcon />
+					</IconButton>
+					<Menu
+					id="menu-appbar"
+					anchorEl={anchorElNav}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left',
+					}}
+					keepMounted
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'left',
+					}}
+					open={Boolean(anchorElNav)}
+					onClose={handleCloseNavMenu}
+					sx={{
+						display: { xs: 'block', md: 'none' },
+					}}
+					>
+					{pages.map((page) => (
+						<MenuItem key={page} onClick={handleCloseNavMenu}>
+						<Typography textAlign="center">{page.name}</Typography>
+						</MenuItem>
+					))}
+					</Menu>
+				</Box>
+				<RestaurantOutlinedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+				<Typography
+					variant="h5"
+					noWrap
+					component="a"
+					href=""
+					sx={{
+					mr: 2,
+					display: { xs: 'flex', md: 'none' },
+					flexGrow: 1,
+					fontFamily: 'monospace',
+					fontWeight: 700,
+					letterSpacing: '.3rem',
+					color: 'inherit',
+					textDecoration: 'none',
+					}}
+				>
+					Food Recipe
+				</Typography>
+				<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+					{pages.map((page) => (
+					<Button
+						key={page}
+						onClick={handleCloseNavMenu}
+						sx={{ my: 2, color: 'white', display: 'block' }}
+						href={ page.url }
+					>
+						{page.name}
+					</Button>
+					))}
+				</Box>
+
+				<Box sx={{ flexGrow: 0 }}>
+					<Tooltip title="Open settings">
+					<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+						<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+					</IconButton>
+					</Tooltip>
+					<Menu
+					sx={{ mt: '45px' }}
+					id="menu-appbar"
+					anchorEl={anchorElUser}
+					anchorOrigin={{
+						vertical: 'top',
+						horizontal: 'right',
+					}}
+					keepMounted
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'right',
+					}}
+					open={Boolean(anchorElUser)}
+					onClose={handleCloseUserMenu}
+					>
+					<Grid container>
+						<Box  mr="20px" ml="10px" mt="10px" mb="10px">
+							<Grid item xs={4}>
+								<Avatar aria-label="recipe" color={colors.redAccent[400]}>
+									R
+								</Avatar>
+							</Grid>
+						</Box>
+						<Box  mr="20px" mt="20px" mb="10px">
+							<Grid item xs={4}>
+								Username
+							</Grid>
+						</Box>
+					</Grid>
+					{settings.map((setting) => (
+						<MenuItem key={setting} onClick={handleCloseUserMenu}>
+						<Typography textAlign="center">{setting.name}</Typography>
+						</MenuItem>
+					))}
+					</Menu>
+				</Box>
+				</Toolbar>
+			</Container>
+    </AppBar>
     );
 }
 

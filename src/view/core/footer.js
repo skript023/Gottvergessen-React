@@ -1,12 +1,21 @@
+import { Typography, Link } from "@mui/material";
 
-const Footer = () => {
+const Copyright = (props) => {
     return (
-        <footer className="py-4 bg-light">
-            <div className="container">
-                <p hidden>learn react</p>
-                <p className="m-0 text-center text-dark">Copyright &copy; Fatur Muhammad 2022</p>
-            </div>
-        </footer>
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="https://gottvergessen.000webhostapp.com/">
+                Fatur Muhammad
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    )
+}
+
+const Footer = (props) => {
+    return (
+        <Copyright sx={{ pt: 5, pb:4 }} />
     );
 }
 
