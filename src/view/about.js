@@ -11,7 +11,7 @@ const About = (props) =>
 
     return (
         <div>
-            <Grid item md={12}>
+            <Grid md={12}>
                 <Box display="flex" justifyContent="center" mt="50px">
                     <Avatar 
                     src={foto} 
@@ -26,7 +26,7 @@ const About = (props) =>
                 </Box>
             </Grid>
 
-                <Grid item md={12}>
+                <Grid md={12}>
                     <Box display="flex" justifyContent="center">
                         <h2>About Me</h2>
                     </Box>

@@ -66,10 +66,15 @@ const Home = (props) => {
     }, [props.title]);
 
     return (
-        <Grid container>
+        <Grid container 
+        direction={{ xs: 'column', md: 'row' }}
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        justifyContent="center"
+        alignItems="center"
+        >
             { backend_data.map((post, i) => (
                     <Grid md={4}>
-                        <Box mt="50px" mx = "40px">
+                        <Box mt="50px" mx = "50px">
                             <Container fixed>
                                 <Card sx={{ maxWidth: 345 }}>
                                     <CardHeader
