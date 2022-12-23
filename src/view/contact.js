@@ -1,5 +1,19 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {Grid, Box, TextField, Container, Button } from '@mui/material'
+import axios from 'axios';
+import { useFormik } from 'formik';
+import * as yup from "yup";
+
+const contactSchema = yup.object().shape({
+    fullname: yup.string("Enter your fullname"),
+    email: yup.string("Enter your email").email("Enter a valid email"),
+    message: yup.string("Enter your message"),
+});
+const initialValues = {
+    fullname: "",
+    email: "",
+    message: "",
+};
 
 const Contact = (props) => 
 {
@@ -7,9 +21,30 @@ const Contact = (props) =>
         document.title = props.title || "React App";
     }, [props.title]);
 
-    // const handleFormSubmit = (values) => {
-    //     console.log(values);
-    // };
+    const [notification, setNotif] = useState("");
+
+    const formik = useFormik({
+        initialValues: initialValues,
+        validationSchema: contactSchema,
+        onSubmit: (values) => {
+            let res = axios({
+            method: "POST",
+            url: "http://localhost:8000/api/v1/contact/create",
+            data: values,
+            headers: {'Content-Type': 'multipart/form-data'}
+            });
+            let response = res.json();
+            if (res.status === 200)
+            {
+                setNotif("User created successfully");
+                alert(response.message)
+            } 
+            else
+            {
+                setNotif("Some error occured");
+            }
+        },
+    });
 
     return (
         <Container fixed>
@@ -31,38 +66,54 @@ const Contact = (props) =>
                         autoComplete="off"
                         justifyContent="space-between" alignItems="center"
                         >
-                        <form>
+                        <form onSubmit={formik.handleSubmit}>
                             <TextField
-                            required
                             variant="filled"
                             type="text"
-                            id="outlined-required"
+                            id="fullname"
                             label="Fullname"
-                            helperText="Enter Your Fullname"
                             name="fullname"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={formik.values.fullname}
+                            error={!!formik.touched.fullname && Boolean(formik.errors.fullname)}
+                            helperText={formik.touched.fullname && formik.errors.fullname}
                             />
                             <TextField
-                            required
                             variant="filled"
                             type="text"
-                            id="outlined-required"
+                            id="email"
                             label="Email"
-                            helperText="Enter Your Email"
                             name="email"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            error={!!formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
                             />
                             <TextField
-                            required
                             multiline
                             rows={5}
-                            id="outlined-multiline-static"
+                            id="message"
                             label="Message"
                             name="message"
-                            helperText="Enter Your Message"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={formik.values.message}
+                            error={!!formik.touched.message && Boolean(formik.errors.message)}
+                            helperText={formik.touched.message && formik.errors.message}
                             />
                             <Box display="flex" justifyContent="center" mt="20px" mr="50px" mb="60px">
-                                <Button type="submit" color="secondary" variant="contained" sx={{ width:200 }}>
-                                    Submit Message
+                                <Button type="submit" 
+                                color="secondary" 
+                                variant="contained" 
+                                sx={{ width:200 }}
+                                loading={formik.isSubmitting}
+                                onClick={formik.submitForm}
+                                >
+                                    Send Message
                                 </Button>
+                                <div className="message">{notification ? <p>{notification}</p> : null}</div>
                             </Box>
                         </form>
                     </Box>

@@ -19,6 +19,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import { tokens } from "../view/dashboard/theme";
 import {useEffect, useState} from 'react'
+import axios from 'axios'
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -51,8 +52,11 @@ const Home = (props) => {
     const [backend_data, set_backend_data] = useState([])
     
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/posts?_limit=12")
-        .then(res => res.json())
+        axios({
+            method: "GET",
+            url: "http://127.0.0.1:8000/api/v1/post/all"
+        })
+        .then(res => res.data)
         .then(data => {
             set_backend_data(data)
         })
@@ -67,8 +71,8 @@ const Home = (props) => {
 
     return (
         <Grid container 
-        direction={{ xs: 'column', md: 'row' }}
-        spacing={{ xs: 1, sm: 2, md: 4 }}
+        direction={{ xs: 'column', lg: 'row' }}
+        spacing={{ xs: 1, sm: 2, md: 3, lg: 4 }}
         justifyContent="center"
         alignItems="center"
         >
@@ -88,8 +92,8 @@ const Home = (props) => {
                                             <MoreVertIcon />
                                         </IconButton>
                                         }
-                                        title={post.title}
-                                        subheader="September 14, 2016"
+                                        title={post.post_title}
+                                        subheader={ post.CreatedAt }
                                     />
                                     <CardMedia
                                         component="img"
@@ -99,7 +103,7 @@ const Home = (props) => {
                                     />
                                     <CardContent>
                                         <Typography variant="body2" color="text.secondary">
-                                        { post.body.substring(0, 50) }
+                                        { post.post.substring(0, 50) }
                                         </Typography>
                                     </CardContent>
                                     <CardActions disableSpacing>
@@ -127,13 +131,7 @@ const Home = (props) => {
                                             aside for 10 minutes.
                                         </Typography>
                                         <Typography paragraph>
-                                            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-                                            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-                                            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-                                            large plate and set aside, leaving chicken and chorizo in the pan. Add
-                                            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-                                            stirring often until thickened and fragrant, about 10 minutes. Add
-                                            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+                                            {post.post}
                                         </Typography>
                                         <Typography paragraph>
                                             Add rice and stir very gently to distribute. Top with artichokes and
