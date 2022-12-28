@@ -17,6 +17,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import { tokens } from "../dashboard/theme";
+import useAuth from '../hooks/authentication';
+import { useNavigate } from 'react-router-dom';
 
 const pages = [
 	{
@@ -57,6 +59,8 @@ const settings = [
 
 const Navigation = () =>
 {
+	const {auth} = useAuth();
+	const navigate = useNavigate();
 	const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -77,6 +81,10 @@ const Navigation = () =>
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
+	
+	const handleRedirect = (url) => {
+		navigate(url, {replace: true})
+	}
 
 	// const [backend_data, set_backend_data] = useState([])
 
@@ -145,7 +153,9 @@ const Navigation = () =>
 					>
 					{pages.map((page) => (
 						<MenuItem key={page} onClick={handleCloseNavMenu}>
-						<Typography textAlign="center">{page.name}</Typography>
+							<Typography textAlign="center" onClick={ () => handleRedirect(page.url) }>
+								{page.name}
+							</Typography>
 						</MenuItem>
 					))}
 					</Menu>
@@ -181,50 +191,59 @@ const Navigation = () =>
 					</Button>
 					))}
 				</Box>
-
-				<Box sx={{ flexGrow: 0 }}>
-					<Tooltip title="Open settings">
-					<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-						<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-					</IconButton>
-					</Tooltip>
-					<Menu
-					sx={{ mt: '45px' }}
-					id="menu-appbar"
-					anchorEl={anchorElUser}
-					anchorOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-					}}
-					keepMounted
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-					}}
-					open={Boolean(anchorElUser)}
-					onClose={handleCloseUserMenu}
-					>
-					<Grid container>
-						<Box  mr="20px" ml="10px" mt="10px" mb="10px">
-							<Grid item xs={4}>
-								<Avatar aria-label="recipe" color={colors.redAccent[400]}>
-									R
-								</Avatar>
-							</Grid>
-						</Box>
-						<Box  mr="20px" mt="20px" mb="10px">
-							<Grid item xs={4}>
-								Username
-							</Grid>
-						</Box>
-					</Grid>
-					{settings.map((setting) => (
-						<MenuItem key={setting} onClick={handleCloseUserMenu}>
-						<Typography textAlign="center">{setting.name}</Typography>
-						</MenuItem>
-					))}
-					</Menu>
-				</Box>
+				{ auth.status === 235679422 ? 
+					<Box sx={{ flexGrow: 0 }}>
+						<Tooltip title="Open settings">
+						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+							<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+						</IconButton>
+						</Tooltip>
+						<Menu
+						sx={{ mt: '45px' }}
+						id="menu-appbar"
+						anchorEl={anchorElUser}
+						anchorOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						keepMounted
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						open={Boolean(anchorElUser)}
+						onClose={handleCloseUserMenu}
+						>
+						<Grid container>
+							<Box  mr="20px" ml="10px" mt="10px" mb="10px">
+								<Grid item xs={4}>
+									<Avatar aria-label="recipe" color={colors.redAccent[400]}>
+										R
+									</Avatar>
+								</Grid>
+							</Box>
+							<Box  mr="20px" mt="20px" mb="10px">
+								<Grid item xs={4}>
+									{auth.user.username}
+								</Grid>
+							</Box>
+						</Grid>
+						{settings.map((setting) => (
+							<MenuItem key={setting} onClick={handleCloseUserMenu}>
+							<Typography textAlign="center" onClick={()=> handleRedirect(setting.url)}>{setting.name}</Typography>
+							</MenuItem>
+						))}
+						</Menu>
+					</Box> : 
+					<Box>
+						<Button
+							onClick={handleCloseNavMenu}
+							sx={{ my: 2, color: 'white', display: 'block' }}
+							href={ "/login" }
+						>
+						Login
+						</Button>
+					</Box> }
 				</Toolbar>
 			</Container>
     </AppBar>

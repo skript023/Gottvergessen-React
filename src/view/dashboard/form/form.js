@@ -9,7 +9,21 @@ const Form = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
     const handleFormSubmit = (values) => {
-        axios.post("http://localhost:8000/api/v1/user/create", {values})
+        axios({
+            method: "POST",
+            url: "http://localhost:8000/api/v1/user/create",
+            data: values,
+            headers: {'Content-Type': 'multipart/form-data'}
+            }).then((response) => {
+                if (response.status === 201)
+                {
+                    alert(response.data["message"])
+                }
+                else
+                {
+                    alert("Registration failed")
+                }
+        })
     };
 
     return (
@@ -39,33 +53,33 @@ const Form = () => {
                 }}
                 >
                 <TextField
-                    fullWidth
+                    required
                     variant="filled"
                     type="text"
-                    label="First Name"
+                    label="Fullname"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.firstName}
-                    name="firstName"
-                    error={!!touched.firstName && !!errors.firstName}
-                    helperText={touched.firstName && errors.firstName}
-                    sx={{ gridColumn: "span 2" }}
+                    value={values.fullname}
+                    name="fullname"
+                    error={!!touched.fullname && !!errors.fullname}
+                    helperText={touched.fullname && errors.fullname}
+                    sx={{ gridColumn: "span 4" }}
                 />
                 <TextField
-                    fullWidth
+                    required
                     variant="filled"
                     type="text"
-                    label="Last Name"
+                    label="Username"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.lastName}
-                    name="lastName"
-                    error={!!touched.lastName && !!errors.lastName}
-                    helperText={touched.lastName && errors.lastName}
-                    sx={{ gridColumn: "span 2" }}
+                    value={values.username}
+                    name="username"
+                    error={!!touched.username && !!errors.username}
+                    helperText={touched.username && errors.username}
+                    sx={{ gridColumn: "span 4" }}
                 />
                 <TextField
-                    fullWidth
+                    required
                     variant="filled"
                     type="text"
                     label="Email"
@@ -78,42 +92,29 @@ const Form = () => {
                     sx={{ gridColumn: "span 4" }}
                 />
                 <TextField
-                    fullWidth
+                    required
                     variant="filled"
-                    type="text"
-                    label="Contact Number"
+                    type="password"
+                    label="Password"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.contact}
-                    name="contact"
-                    error={!!touched.contact && !!errors.contact}
-                    helperText={touched.contact && errors.contact}
+                    value={values.password}
+                    name="password"
+                    error={!!touched.password && !!errors.password}
+                    helperText={touched.password && errors.password}
                     sx={{ gridColumn: "span 4" }}
                 />
                 <TextField
-                    fullWidth
+                    required
                     variant="filled"
-                    type="text"
-                    label="Address 1"
+                    type="password"
+                    label="Confirm Password"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.address1}
-                    name="address1"
-                    error={!!touched.address1 && !!errors.address1}
-                    helperText={touched.address1 && errors.address1}
-                    sx={{ gridColumn: "span 4" }}
-                />
-                <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="Address 2"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.address2}
-                    name="address2"
-                    error={!!touched.address2 && !!errors.address2}
-                    helperText={touched.address2 && errors.address2}
+                    value={values.password_confirmation}
+                    name="password_confirmation"
+                    error={!!touched.password_confirmation && !!errors.password_confirmation}
+                    helperText={touched.password_confirmation && errors.password_confirmation}
                     sx={{ gridColumn: "span 4" }}
                 />
                 </Box>
@@ -129,26 +130,21 @@ const Form = () => {
     );
 };
 
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+//const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
-    email: yup.string().email("invalid email").required("required"),
-    contact: yup
-        .string()
-        .matches(phoneRegExp, "Phone number is not valid")
-        .required("required"),
-    address1: yup.string().required("required"),
-    address2: yup.string().required("required"),
+    fullname: yup.string().required("Fullname is required"),
+    username: yup.string().required("Username is required"),
+    email: yup.string().email("Enter a valid email").required("Email is required"),
+    password: yup.string().required("Password is required"),
+    password_confirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
 });
 const initialValues = {
-    firstName: "",
-    lastName: "",
+    fullname: "",
+    username: "",
     email: "",
-    contact: "",
-    address1: "",
-    address2: "",
+    password: "",
+    password_confirmation: ""
 };
 
 export default Form;

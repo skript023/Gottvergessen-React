@@ -19,7 +19,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { styled } from '@mui/material/styles';
 import { tokens } from "../view/dashboard/theme";
 import {useEffect, useState} from 'react'
-import axios from 'axios'
+import axios from '../api/axios'
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -52,10 +52,7 @@ const Home = (props) => {
     const [backend_data, set_backend_data] = useState([])
     
     useEffect(() => {
-        axios({
-            method: "GET",
-            url: "http://127.0.0.1:8000/api/v1/post/all"
-        })
+        axios.get("/post/all")
         .then(res => res.data)
         .then(data => {
             set_backend_data(data)

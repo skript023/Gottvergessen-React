@@ -1,13 +1,15 @@
 import {useEffect, useState} from 'react'
-import {Grid, Box, TextField, Container, Button } from '@mui/material'
-import axios from 'axios';
+import {Grid, Box, TextField, Container, Button, Alert, Collapse } from '@mui/material'
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from '../api/axios';
 import { useFormik } from 'formik';
 import * as yup from "yup";
 
 const contactSchema = yup.object().shape({
-    fullname: yup.string("Enter your fullname"),
-    email: yup.string("Enter your email").email("Enter a valid email"),
-    message: yup.string("Enter your message"),
+    fullname: yup.string("Enter your fullname").required("Fullname is required"),
+    email: yup.string("Enter your email").email("Enter a valid email").required("Email is required"),
+    message: yup.string("Enter your message").required("Message is required"),
 });
 const initialValues = {
     fullname: "",
@@ -15,39 +17,45 @@ const initialValues = {
     message: "",
 };
 
-const Contact = (props) => 
-{
+const Contact = (props) => {
     useEffect(() => {
         document.title = props.title || "React App";
     }, [props.title]);
 
     const [notification, setNotif] = useState("");
+    const [success, setSuccess] = useState(false);
 
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: contactSchema,
         onSubmit: (values) => {
-            let res = axios({
-            method: "POST",
-            url: "http://localhost:8000/api/v1/contact/create",
-            data: values,
+            axios.post("/contact/create", values, {
             headers: {'Content-Type': 'multipart/form-data'}
-            });
-            let response = res.json();
-            if (res.status === 200)
-            {
-                setNotif("User created successfully");
-                alert(response.message)
-            } 
-            else
-            {
-                setNotif("Some error occured");
-            }
+            }).then((response) => {
+                if (response.status === 200)
+                {
+                    setNotif("Your message sent successfully");
+                    setSuccess(true);
+                }
+                else
+                {
+                    setNotif("Some error occured");
+                }
+            })
         },
     });
 
     return (
         <Container fixed>
+            <Collapse in={success}>
+                <Alert severity="success" color="info" action={
+                <IconButton aria-label="close" color="inherit" size="small" onClick={() => { setSuccess(false); }} >
+                    <CloseIcon fontSize="inherit" />
+                </IconButton>
+                }>
+                    {notification ? <p>{notification}</p> : null}
+                </Alert>
+            </Collapse>
             <Grid container>
                 <Grid item md={12}>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -56,18 +64,16 @@ const Contact = (props) =>
                 </Grid>
             </Grid>
             <Grid container>
-                <Grid item md={6}>
+                <Grid md={6}>
                     <Box
-                        component="form"
                         sx={{
                             '& .MuiTextField-root': { m: 1, width: '60ch' },
                         }}
-                        noValidate
-                        autoComplete="off"
                         justifyContent="space-between" alignItems="center"
                         >
                         <form onSubmit={formik.handleSubmit}>
                             <TextField
+                            required
                             variant="filled"
                             type="text"
                             id="fullname"
@@ -80,6 +86,7 @@ const Contact = (props) =>
                             helperText={formik.touched.fullname && formik.errors.fullname}
                             />
                             <TextField
+                            required
                             variant="filled"
                             type="text"
                             id="email"
@@ -92,6 +99,7 @@ const Contact = (props) =>
                             helperText={formik.touched.email && formik.errors.email}
                             />
                             <TextField
+                            required
                             multiline
                             rows={5}
                             id="message"
@@ -108,12 +116,9 @@ const Contact = (props) =>
                                 color="secondary" 
                                 variant="contained" 
                                 sx={{ width:200 }}
-                                loading={formik.isSubmitting}
-                                onClick={formik.submitForm}
                                 >
                                     Send Message
                                 </Button>
-                                <div className="message">{notification ? <p>{notification}</p> : null}</div>
                             </Box>
                         </form>
                     </Box>
