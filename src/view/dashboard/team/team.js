@@ -6,40 +6,38 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../component/header";
 import {useEffect, useState} from 'react'
+import axios from '../../../api/axios'
+import useAuth from '../../hooks/authentication'
+import Joaat from '../../helper/joaat'
 
 const Team = () => {
+    const {auth} = useAuth()
     const [backend_data, set_backend_data] = useState([])
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/users?_limit=12")
-        .then(res => res.json())
+        axios.post("/user/all", {role: Joaat(auth.user.user_role.role)}, {headers: {"Authorization": `Bearer ${auth.token}`}})
+        .then(res => res.data.users)
         .then(data => {
             set_backend_data(data)
         })
         .catch((err) => {
             console.log(err.message);
         });
-    }, [])
+    }, [auth.user.user_role.role, auth.token])
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
     const columns = [
     { field: "id", headerName: "ID" },
     {
-        field: "name",
+        field: "fullname",
         headerName: "Name",
         flex: 1,
         cellClassName: "name-column--cell",
     },
     {
-        field: "age",
-        headerName: "Age",
-        type: "number",
-        headerAlign: "left",
-        align: "left",
-    },
-    {
-        field: "phone",
-        headerName: "Phone Number",
+        field: "username",
+        headerName: "Username",
         flex: 1,
     },
     {
@@ -48,10 +46,15 @@ const Team = () => {
         flex: 1,
     },
     {
-        field: "accessLevel",
+        field: "status",
+        headerName: "Status",
+        flex: 0.5,
+    },
+    {
+        field: "user_role",
         headerName: "Access Level",
         flex: 1,
-        renderCell: ({ row: { access } }) => {
+        renderCell: ({ row: { user_role } }) => {
         return (
             <Box
                 width="60%"
@@ -60,19 +63,19 @@ const Team = () => {
                 display="flex"
                 justifyContent="center"
                 backgroundColor={
-                    access === "admin"
+                    user_role.id === 4
                     ? colors.greenAccent[600]
-                    : access === "manager"
+                    : user_role.id === 2
                     ? colors.greenAccent[700]
-                    : colors.greenAccent[700]
+                    : colors.redAccent[700]
                 }
                 borderRadius="4px"
                 >
-                {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-                {access === "manager" && <SecurityOutlinedIcon />}
-                {access === "user" && <LockOpenOutlinedIcon />}
+                {user_role.id === 4 && <AdminPanelSettingsOutlinedIcon />}
+                {user_role.id === 2 && <SecurityOutlinedIcon />}
+                {user_role.id === 1 && <LockOpenOutlinedIcon />}
                 <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                    {access}
+                    {user_role.role}
                 </Typography>
             </Box>
             );

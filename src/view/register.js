@@ -30,7 +30,7 @@ const Register = () => {
             axios.post("/user/create", values, {
             headers: {'Content-Type': 'multipart/form-data'}
             }).then((response) => {
-                if (response.status != 201)
+                if (response.status !== 201)
                 {
                     setNotif(()=> (<Alert severity="error">{ response.data.message }</Alert>))
                 }

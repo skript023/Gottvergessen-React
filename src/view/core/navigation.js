@@ -191,11 +191,11 @@ const Navigation = () =>
 					</Button>
 					))}
 				</Box>
-				{ auth.status === 235679422 ? 
+				{ auth.user ? 
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
 						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-							<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+							<Avatar alt="Remy Sharp" src={auth.user.avatar} />
 						</IconButton>
 						</Tooltip>
 						<Menu
@@ -217,9 +217,7 @@ const Navigation = () =>
 						<Grid container>
 							<Box  mr="20px" ml="10px" mt="10px" mb="10px">
 								<Grid item xs={4}>
-									<Avatar aria-label="recipe" color={colors.redAccent[400]}>
-										R
-									</Avatar>
+									<Avatar aria-label="recipe" color={colors.redAccent[400]} src={auth.user.avatar}/>
 								</Grid>
 							</Box>
 							<Box  mr="20px" mt="20px" mb="10px">

@@ -16,6 +16,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import useAuth from "../../hooks/authentication";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -37,6 +38,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const DashboardSidebar = () =>
 {
+    const {auth} = useAuth();
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -97,7 +99,7 @@ const DashboardSidebar = () =>
                     alt="profile-user"
                     width="100px"
                     height="100px"
-                    src={`../../assets/user.png`}
+                    src={auth.user.avatar}
                     style={{ cursor: "pointer", borderRadius: "50%" }}
                     />
                 </Box>
@@ -108,10 +110,10 @@ const DashboardSidebar = () =>
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                     >
-                    Admin Name
+                    {auth.user.fullname}
                     </Typography>
                     <Typography variant="h5" color={colors.greenAccent[500]}>
-                    Admin Status
+                    {auth.user.user_role.role}
                     </Typography>
                 </Box>
                 </Box>

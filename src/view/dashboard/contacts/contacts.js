@@ -4,63 +4,44 @@ import { tokens } from "../theme";
 import Header from "../../component/header";
 import { useTheme } from "@mui/material";
 import {useEffect, useState} from 'react'
+import axios from '../../../api/axios'
+import useAuth from '../../hooks/authentication'
 
 const Contacts = () => {
+    const {auth} = useAuth()
     const [backend_data, set_backend_data] = useState([])
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/comments?_limit=12")
-        .then(res => res.json())
+        axios.get("/contact/all", {headers: {"Authorization": `Bearer ${auth.token}`}})
+        .then(res => res.data)
         .then(data => {
             set_backend_data(data)
         })
         .catch((err) => {
             console.log(err.message);
         });
-    }, [])
+    }, [auth.token])
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     const columns = [
         { field: "id", headerName: "ID", flex: 0.5 },
-        { field: "registrarId", headerName: "Registrar ID" },
         {
-        field: "name",
-        headerName: "Name",
-        flex: 1,
-        cellClassName: "name-column--cell",
+            field: "fullname",
+            headerName: "fullname",
+            flex: 1,
+            cellClassName: "name-column--cell",
         },
         {
-        field: "age",
-        headerName: "Age",
-        type: "number",
-        headerAlign: "left",
-        align: "left",
+            field: "email",
+            headerName: "Email",
+            flex: 1,
         },
         {
-        field: "phone",
-        headerName: "Phone Number",
-        flex: 1,
+            field: "message",
+            headerName: "message",
+            flex: 1,
         },
-        {
-        field: "email",
-        headerName: "Email",
-        flex: 1,
-        },
-        {
-        field: "address",
-        headerName: "Address",
-        flex: 1,
-        },
-        {
-        field: "city",
-        headerName: "City",
-        flex: 1,
-        },
-        {
-        field: "zipCode",
-        headerName: "Zip Code",
-        flex: 1,
-        },
+        
     ];
 
     return (

@@ -7,6 +7,7 @@ import axios from '../api/axios'
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "./component/header";
 import useAuth from './hooks/authentication';
+import Xorstr from './helper/encrypt';
 
 const checkoutSchema = yup.object().shape({
     identity: yup.string().required("Username or Email is required"),
@@ -30,8 +31,9 @@ const Login = () => {
             if (response.status === 200)
             {
                 setTimeout(()=> setNotif(()=> (<Alert severity="success">{ response.data.message }</Alert>)), 2000)
+                const result = JSON.stringify(response.data)
                 setAuth(response.data)
-                sessionStorage.setItem('RESPONSE', response.data)
+                sessionStorage.setItem(Xorstr('_state'), Xorstr(result))
                 navigate("/dashboard", {replace: true})
             }
             else

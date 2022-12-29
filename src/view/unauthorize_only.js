@@ -6,7 +6,7 @@ const UnauthorizedOnly = () => {
     const location = useLocation()
 
     return (
-        auth.status !== 235679422 ? <Outlet/> : <Navigate to="/dashboard" state={{ from:location }} replace/>
+        !auth.user ? <Outlet/> : <Navigate to="/" state={{ from:location }} replace/>
     )
 }
 

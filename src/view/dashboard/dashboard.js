@@ -7,10 +7,10 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../component/header";
+import StatBox from "../component/stat_box";
 // import LineChart from "../component/line_charts";
 // import GeographyChart from "../component/geo_charts";
 // import BarChart from "../component/bar_chart";
-import StatBox from "../component/stat_box";
 // import ProgressCircle from "..component/ProgressCircle";
 
 const Dashboard = () => {
