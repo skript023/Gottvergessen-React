@@ -1,6 +1,9 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../dashboard/theme";
 // import { mockTransactions } from "../../data/mockData";
+import useAuth from "../hooks/authentication";
+import axios from "../../api/axios";
+import {useEffect, useState} from 'react';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -14,8 +17,33 @@ import StatBox from "../component/stat_box";
 // import ProgressCircle from "..component/ProgressCircle";
 
 const Dashboard = () => {
+    const {auth} = useAuth();
+    const [contact, setContact] = useState([]);
+    const [user, setUser] = useState([]);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    useEffect(() => {
+        axios.get("/contact/counts", {headers: {"Authorization": `Bearer ${auth.token}`}})
+        .then(res => res.data)
+        .then(data => {
+            setContact(data.contact_count)
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    }, [auth.token])
+
+    useEffect(() => {
+        axios.get("/user/counts", {header: {"Authorization": `Bearer ${auth.token}`}})
+        .then(res => res.data)
+        .then(data => {
+            setUser(data)
+        })
+        .catch((err) => {
+            console.log(err.message)
+        })
+    })
 
     return (
         <Box m="20px">
@@ -55,8 +83,8 @@ const Dashboard = () => {
             justifyContent="center"
             >
             <StatBox
-                title="12,361"
-                subtitle="Emails Sent"
+                title={contact}
+                subtitle="Messages Sent"
                 progress="0.75"
                 increase="+14%"
                 icon={
@@ -93,8 +121,8 @@ const Dashboard = () => {
             justifyContent="center"
             >
             <StatBox
-                title="32,441"
-                subtitle="New Clients"
+                title={user}
+                subtitle="Users"
                 progress="0.30"
                 increase="+5%"
                 icon={
