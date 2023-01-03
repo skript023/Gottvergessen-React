@@ -18,32 +18,30 @@ import StatBox from "../component/stat_box";
 
 const Dashboard = () => {
     const {auth} = useAuth();
-    const [contact, setContact] = useState([]);
-    const [user, setUser] = useState([]);
+    const [contact, setContact] = useState(null);
+    const [user, setUser] = useState(null);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     useEffect(() => {
         axios.get("/contact/counts", {headers: {"Authorization": `Bearer ${auth.token}`}})
-        .then(res => res.data)
+        .then(res => res.data.contacts)
         .then(data => {
-            setContact(data.contact_count)
+            setContact(data)
         })
         .catch((err) => {
             console.log(err.message);
         });
-    }, [auth.token])
 
-    useEffect(() => {
-        axios.get("/user/counts", {header: {"Authorization": `Bearer ${auth.token}`}})
-        .then(res => res.data)
+        axios.get("/user/counts", {headers: {"Authorization": `Bearer ${auth.token}`}})
+        .then(res => res.data.users)
         .then(data => {
             setUser(data)
         })
         .catch((err) => {
             console.log(err.message)
         })
-    })
+    }, [auth.token])
 
     return (
         <Box m="20px">
