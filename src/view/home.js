@@ -73,7 +73,7 @@ const Home = (props) => {
         justifyContent="center"
         alignItems="center"
         >
-            { backend_data.map((post, i) => (
+            { backend_data.map((post) => (
                     <Grid md={4}>
                         <Box mt="50px" mx = "50px">
                             <Container fixed>
@@ -112,15 +112,15 @@ const Home = (props) => {
                                         </IconButton>
                                         <ExpandMore
                                         expand={expanded}
-                                        onClick={() => handleExpandClick(i)}
+                                        onClick={() => handleExpandClick(post.id)}
                                         aria-expanded={expanded}
                                         aria-label="show more"
-                                        id={i}
+                                        id={post.id}
                                         >
                                         <ExpandMoreIcon />
                                         </ExpandMore>
                                     </CardActions>
-                                    <Collapse in={expanded === i} id={i} timeout="auto" unmountOnExit>
+                                    <Collapse in={expanded === post.id} id={post.id} timeout="auto" unmountOnExit>
                                         <CardContent>
                                         <Typography paragraph>Method:</Typography>
                                         <Typography paragraph>
