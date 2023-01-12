@@ -9,6 +9,7 @@ import Invoices from "./invoice/invoices";
 import Calendar from "./calendar/calendar"
 import Bar from "./bar/bar";
 import Form from "./form/form";
+import AddPost from './post/add'
 // import Line from "./scenes/line";
 // import Pie from "./scenes/pie";
 import FAQ from "./faq/faq";
@@ -27,6 +28,7 @@ const Backend = () => {
                     <Route path='faq' element={< FAQ title="FAQ" />}/>
                     <Route path='form' element={< Form title="Form" />}/>
                     <Route path='bar' element={< Bar title="Bar" />}/>
+                    <Route path='post/add' element={< AddPost title="Post" />}/>
                     {/* 
                     
                     <Route path='line' element={< Line title="Line" />}/>

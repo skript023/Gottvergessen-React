@@ -1,10 +1,10 @@
-import {Grid, Box, TextField, Container, Button, Alert } from '@mui/material'
+import {Grid, Box, TextField, Container, Button, Alert, Input } from '@mui/material'
 import { useNavigate  } from 'react-router-dom'
 import React, {useState} from 'react'
 import { useFormik } from 'formik';
 import * as yup from "yup";
 import useAuth from '../../hooks/authentication'
-import axios from '../api/axios';
+import axios from '../../../api/axios';
 
 const contactSchema = yup.object().shape({
     title: yup.string().required("Title is required"),
@@ -32,7 +32,7 @@ const AddPost = () => {
                 'Content-Type': 'multipart/form-data',
                 "Authorization": `Bearer ${auth.token}`
             }}).then((response) => {
-                if (response.status !== 201)
+                if (response.status !== 200)
                 {
                     setNotif(()=> (<Alert severity="error">{ response.data.message }</Alert>))
                 }
@@ -41,8 +41,6 @@ const AddPost = () => {
                     setTimeout(()=> setNotif(()=> (<Alert severity="success">{ response.data.message }</Alert>)), 2000)
                     navigate("/login", {replace: true})
                 }
-            }).catch(() => {
-                setNotif(()=> (<Alert severity="error">Registration failed</Alert>))
             })
         },
     });
@@ -53,7 +51,7 @@ const AddPost = () => {
             <Grid container>
                 <Grid md={6}>
                     <Box display="flex" justifyContent="center" alignItems="center">
-                        <h1 className="text-center">Register</h1>
+                        <h1 className="text-center">Add Post</h1>
                     </Box>
                 </Grid>
                 <Box display="flex" justifyContent="center" alignItems="center">
@@ -90,10 +88,10 @@ const AddPost = () => {
                                 value={formik.values.category}
                                 error={!!formik.touched.category && !!formik.errors.category}
                                 />
-                                <TextField
+                                <Input
                                 required
                                 variant="filled"
-                                type="password"
+                                type="file"
                                 id="outlined-required"
                                 label="Post Picture"
                                 name="image"
@@ -101,10 +99,11 @@ const AddPost = () => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 value={formik.values.image}
-                                error={!!formik.touched.image && !!formik.errors.image}
                                 />
                                 <TextField
+                                required
                                 multiline
+                                rows={5}
                                 variant="filled"
                                 type="text"
                                 id="outlined-required"

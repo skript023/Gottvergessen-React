@@ -194,8 +194,8 @@ const DashboardSidebar = () =>
                 Charts
                 </Typography>
                 <Item
-                title="Bar Chart"
-                to="/dashboard/bar"
+                title="Post"
+                to="/dashboard/post/add"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
